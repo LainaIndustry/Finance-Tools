@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Calculators - Loan & Finance Calculators</title>
+    <meta name="description" content="Browse all our free financial calculators: EMI, loans, investments, interest, savings, and more.">
+    <link rel="canonical" href="https://www.loanfinancecalculators.com/calculators.html">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container nav-bar">
+            <div class="logo">
+                <span class="logo-icon">📊</span>
+                <span class="logo-text">Loan<span>Finance</span>.</span>
+            </div>
+            <nav aria-label="Main navigation">
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/calculators.html" class="active">Calculators</a></li>
+                    <li><a href="/loan-calculator.html">Loans</a></li>
+                    <li><a href="/investment-calculator.html">Investments</a></li>
+                    <li><a href="/interest-calculator.html">Interest</a></li>
+                    <li><a href="/savings-calculator.html">Savings</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile navigation">
+            <a href="/">Home</a>
+            <a href="/calculators.html">Calculators</a>
+            <a href="/loan-calculator.html">Loans</a>
+            <a href="/investment-calculator.html">Investments</a>
+            <a href="/interest-calculator.html">Interest</a>
+            <a href="/savings-calculator.html">Savings</a>
+            <a href="/about.html">About</a>
+            <a href="/contact.html">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>All Calculators</h1>
+            <p>Browse our complete collection of financial calculators. Find the right tool for your needs.</p>
+            
+            <div class="ad-container">
+                <span>📢 Advertisement</span>
+            </div>
+
+            <div class="calculator-list" id="calculatorList">
+                <!-- All calculators will be listed here -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <strong>Loan & Finance Calculators</strong>
+                    <p>Smart Financial Calculators for Better Decisions</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Home</a>
+                    <a href="/calculators.html">Calculators</a>
+                    <a href="/about.html">About Us</a>
+                    <a href="/contact.html">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <a href="/privacy-policy.html">Privacy Policy</a>
+                    <a href="/terms.html">Terms & Conditions</a>
+                    <a href="/disclaimer.html">Disclaimer</a>
+                    <a href="/blog.html">Blog</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Loan & Finance Calculators. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allCalculators = [
+                { name: 'EMI Calculator', icon: '📊', desc: 'Calculate monthly EMI for any loan', link: '/emi-calculator.html', category: 'Loan' },
+                { name: 'Loan Calculator', icon: '🏦', desc: 'Calculate total loan cost and payments', link: '/loan-calculator.html', category: 'Loan' },
+                { name: 'Personal Loan Calculator', icon: '💳', desc: 'Calculate personal loan EMIs', link: '/personal-loan-calculator.html', category: 'Loan' },
+                { name: 'Home Loan Calculator', icon: '🏠', desc: 'Calculate home loan EMIs', link: '/home-loan-calculator.html', category: 'Loan' },
+                { name: 'Car Loan Calculator', icon: '🚗', desc: 'Calculate car loan EMIs', link: '/car-loan-calculator.html', category: 'Loan' },
+                { name: 'Mortgage Calculator', icon: '🏡', desc: 'Calculate mortgage payments', link: '/mortgage-calculator.html', category: 'Loan' },
+                { name: 'Loan Affordability', icon: '💵', desc: 'Check how much loan you can afford', link: '/affordability-calculator.html', category: 'Loan' },
+                { name: 'Amortization Calculator', icon: '📋', desc: 'View full loan amortization schedule', link: '/amortization-calculator.html', category: 'Loan' },
+                { name: 'Simple Interest', icon: '🧮', desc: 'Calculate simple interest', link: '/simple-interest-calculator.html', category: 'Interest' },
+                { name: 'Compound Interest', icon: '📈', desc: 'Calculate compound interest growth', link: '/compound-interest-calculator.html', category: 'Interest' },
+                { name: 'Interest Rate Calculator', icon: '📊', desc: 'Calculate interest rates', link: '/interest-calculator.html', category: 'Interest' },
+                { name: 'SIP Calculator', icon: '💰', desc: 'Calculate SIP returns', link: '/sip-calculator.html', category: 'Investment' },
+                { name: 'Investment Calculator', icon: '📈', desc: 'Calculate investment returns', link: '/investment-calculator.html', category: 'Investment' },
+                { name: 'Lump Sum Calculator', icon: '💎', desc: 'Calculate lump sum investment returns', link: '/lump-sum-calculator.html', category: 'Investment' },
+                { name: 'FD Calculator', icon: '🏦', desc: 'Calculate fixed deposit returns', link: '/fd-calculator.html', category: 'Savings' },
+                { name: 'RD Calculator', icon: '📆', desc: 'Calculate recurring deposit returns', link: '/rd-calculator.html', category: 'Savings' },
+                { name: 'Savings Calculator', icon: '💰', desc: 'Calculate savings growth', link: '/savings-calculator.html', category: 'Savings' },
+                { name: 'Future Value Calculator', icon: '🔮', desc: 'Calculate future value of investments', link: '/future-value-calculator.html', category: 'Savings' },
+            ];
+
+            const container = document.getElementById('calculatorList');
+            const searchParam = new URLSearchParams(window.location.search).get('search');
+
+            let filteredCalculators = allCalculators;
+            if (searchParam) {
+                const query = searchParam.toLowerCase();
+                filteredCalculators = allCalculators.filter(c => 
+                    c.name.toLowerCase().includes(query) || 
+                    c.category.toLowerCase().includes(query) ||
+                    c.desc.toLowerCase().includes(query)
+                );
+            }
+
+            // Group by category
+            const categories = {};
+            filteredCalculators.forEach(calc => {
+                if (!categories[calc.category]) {
+                    categories[calc.category] = [];
+                }
+                categories[calc.category].push(calc);
+            });
+
+            let html = '';
+            for (const [category, calculators] of Object.entries(categories)) {
+                html += `<h2 class="section-title">${category} Calculators</h2>`;
+                html += `<div class="card-grid">`;
+                calculators.forEach(calc => {
+                    html += `
+                        <div class="calc-card">
+                            <span class="icon">${calc.icon}</span>
+                            <h3>${calc.name}</h3>
+                            <p>${calc.desc}</p>
+                            <a href="${calc.link}" class="btn">Calculate Now</a>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            if (!html) {
+                html = `<p>No calculators found matching your search. <a href="/calculators.html">View all calculators</a>.</p>`;
+            }
+
+            container.innerHTML = html;
+        });
+    </script>
+</body>
+</html>
