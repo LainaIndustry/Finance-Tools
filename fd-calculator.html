@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FD Calculator - Calculate Fixed Deposit Returns</title>
+    <meta name="description" content="Free FD calculator to calculate fixed deposit maturity amount and interest earned. Compare different FD schemes easily.">
+    <link rel="canonical" href="https://www.loanfinancecalculators.com/fd-calculator.html">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .calculator-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 24px 0 40px;
+        }
+        .calculator-input, .calculator-result {
+            background: var(--white);
+            padding: 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            transition: border-color var(--transition);
+            background: var(--white);
+            color: var(--text);
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .form-group .hint {
+            font-size: 0.85rem;
+            color: var(--text-lighter);
+            margin-top: 4px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-item .label {
+            color: var(--text-light);
+        }
+        .result-item .value {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        .result-item .value.positive {
+            color: #2e7d32;
+        }
+        .error-message {
+            color: #d32f2f;
+            background: #ffebee;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin: 12px 0;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        .result-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        .result-actions button {
+            padding: 8px 20px;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-weight: 500;
+        }
+        .result-actions button:hover {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+        }
+        .faq-section {
+            margin: 40px 0;
+        }
+        .faq-item {
+            background: var(--white);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .faq-question {
+            padding: 16px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background var(--transition);
+        }
+        .faq-question:hover {
+            background: var(--gray);
+        }
+        .faq-question .arrow {
+            transition: transform var(--transition);
+        }
+        .faq-question.active .arrow {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            padding: 0 20px 20px;
+            display: none;
+            color: var(--text-light);
+        }
+        .faq-answer.show {
+            display: block;
+        }
+        .related-calculators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0 32px;
+        }
+        @media (max-width: 820px) {
+            .calculator-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .calculator-input, .calculator-result {
+                padding: 20px;
+            }
+        }
+        @media (max-width: 500px) {
+            .result-item {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .result-item .value {
+                font-size: 1rem;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn-group .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-bar">
+            <div class="logo">
+                <span class="logo-icon">📊</span>
+                <span class="logo-text">Loan<span>Finance</span>.</span>
+            </div>
+            <nav aria-label="Main navigation">
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/calculators.html">Calculators</a></li>
+                    <li><a href="/loan-calculator.html">Loans</a></li>
+                    <li><a href="/investment-calculator.html">Investments</a></li>
+                    <li><a href="/interest-calculator.html">Interest</a></li>
+                    <li><a href="/savings-calculator.html" class="active">Savings</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile navigation">
+            <a href="/">Home</a>
+            <a href="/calculators.html">Calculators</a>
+            <a href="/loan-calculator.html">Loans</a>
+            <a href="/investment-calculator.html">Investments</a>
+            <a href="/interest-calculator.html">Interest</a>
+            <a href="/savings-calculator.html">Savings</a>
+            <a href="/about.html">About</a>
+            <a href="/contact.html">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <nav aria-label="Breadcrumb">
+                <ol style="display:flex; gap:8px; list-style:none; padding:16px 0; font-size:0.9rem; color:var(--text-lighter);">
+                    <li><a href="/">Home</a></li>
+                    <li>›</li>
+                    <li><a href="/calculators.html">Calculators</a></li>
+                    <li>›</li>
+                    <li>FD Calculator</li>
+                </ol>
+            </nav>
+
+            <h1>FD Calculator - Fixed Deposit Returns</h1>
+            <p>Calculate the maturity amount and interest earned on your fixed deposit investments. Compare different FD schemes and find the best option for your savings.</p>
+
+            <div class="ad-container">
+                <span>📢 Advertisement</span>
+            </div>
+
+            <div class="calculator-wrapper">
+                <div class="calculator-input">
+                    <h2>Calculator Input</h2>
+                    
+                    <div class="form-group">
+                        <label for="fdPrincipal">Deposit Amount</label>
+                        <input type="number" id="fdPrincipal" placeholder="e.g., 100000" step="1000" min="0">
+                        <div class="hint">Amount you want to deposit</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fdRate">Interest Rate (% per annum)</label>
+                        <input type="number" id="fdRate" placeholder="e.g., 7.5" step="0.1" min="0">
+                        <div class="hint">Annual interest rate offered by the bank</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fdTenure">Tenure (Years)</label>
+                        <input type="number" id="fdTenure" placeholder="e.g., 5" step="0.5" min="0.5">
+                        <div class="hint">Duration of the fixed deposit</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fdCompounding">Compounding Frequency</label>
+                        <select id="fdCompounding">
+                            <option value="yearly">Yearly</option>
+                            <option value="half-yearly" selected>Half-Yearly</option>
+                            <option value="quarterly">Quarterly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                        <div class="hint">How often interest is compounded</div>
+                    </div>
+
+                    <div class="error-message" id="errorMessage"></div>
+
+                    <div class="btn-group">
+                        <button class="btn" id="calculateBtn">Calculate FD Returns</button>
+                        <button class="btn btn-outline" id="resetBtn">Reset</button>
+                    </div>
+                </div>
+
+                <div class="calculator-result">
+                    <h2>Results</h2>
+                    <div id="resultContainer">
+                        <div class="result-item">
+                            <span class="label">Maturity Amount</span>
+                            <span class="value" id="maturityAmountResult">₹0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Total Interest Earned</span>
+                            <span class="value positive" id="fdInterestResult">₹0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Principal Amount</span>
+                            <span class="value" id="fdPrincipalResult">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="result-actions">
+                        <button id="copyResultBtn">📋 Copy Results</button>
+                        <button id="printResultBtn">🖨️ Print</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ad-container">
+                <span>📢 Advertisement</span>
+            </div>
+
+            <!-- Related Calculators -->
+            <h2>Related Calculators</h2>
+            <div class="related-calculators">
+                <a href="/rd-calculator.html" class="btn btn-outline">RD Calculator</a>
+                <a href="/compound-interest-calculator.html" class="btn btn-outline">Compound Interest Calculator</a>
+                <a href="/savings-calculator.html" class="btn btn-outline">Savings Calculator</a>
+                <a href="/sip-calculator.html" class="btn btn-outline">SIP Calculator</a>
+            </div>
+
+            <!-- FAQ Section -->
+            <section class="faq-section" aria-labelledby="faq-title">
+                <h2 id="faq-title">Frequently Asked Questions</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <span>What is a Fixed Deposit (FD)?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        A Fixed Deposit is a financial instrument offered by banks and financial institutions that provides a fixed rate of return on your investment for a specified period. It's one of the safest investment options.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <span>How is FD interest calculated?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        FD interest is calculated using the compound interest formula. The interest is compounded at regular intervals (yearly, half-yearly, quarterly, or monthly) based on the bank's policy.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <span>Is FD safe?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, Fixed Deposits are considered one of the safest investment options as they are backed by the bank's guarantee. Deposits up to ₹5 lakhs are insured by the Deposit Insurance and Credit Guarantee Corporation (DICGC).
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <strong>Loan & Finance Calculators</strong>
+                    <p>Smart Financial Calculators for Better Decisions</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Home</a>
+                    <a href="/calculators.html">Calculators</a>
+                    <a href="/about.html">About Us</a>
+                    <a href="/contact.html">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <a href="/privacy-policy.html">Privacy Policy</a>
+                    <a href="/terms.html">Terms & Conditions</a>
+                    <a href="/disclaimer.html">Disclaimer</a>
+                    <a href="/blog.html">Blog</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Loan & Finance Calculators. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/calculators.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fdPrincipal = document.getElementById('fdPrincipal');
+            const fdRate = document.getElementById('fdRate');
+            const fdTenure = document.getElementById('fdTenure');
+            const fdCompounding = document.getElementById('fdCompounding');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            const maturityAmountResult = document.getElementById('maturityAmountResult');
+            const fdInterestResult = document.getElementById('fdInterestResult');
+            const fdPrincipalResult = document.getElementById('fdPrincipalResult');
+
+            function calculate() {
+                errorMessage.classList.remove('show');
+                errorMessage.textContent = '';
+
+                const principal = parseFloat(fdPrincipal.value);
+                const rate = parseFloat(fdRate.value);
+                const tenure = parseFloat(fdTenure.value);
+
+                if (isNaN(principal) || principal <= 0) {
+                    errorMessage.textContent = 'Please enter a valid deposit amount.';
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                if (isNaN(rate) || rate < 0) {
+                    errorMessage.textContent = 'Please enter a valid interest rate.';
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                if (isNaN(tenure) || tenure <= 0) {
+                    errorMessage.textContent = 'Please enter a valid tenure.';
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                const result = window.calculateFD(principal, rate, tenure, fdCompounding.value);
+                
+                if (result.error) {
+                    errorMessage.textContent = result.error;
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                const currencySymbol = '₹';
+                maturityAmountResult.textContent = window.formatCurrency(result.totalAmount, currencySymbol);
+                fdInterestResult.textContent = window.formatCurrency(result.totalInterest, currencySymbol);
+                fdPrincipalResult.textContent = window.formatCurrency(result.principal, currencySymbol);
+            }
+
+            function resetCalculator() {
+                fdPrincipal.value = '';
+                fdRate.value = '';
+                fdTenure.value = '';
+                errorMessage.classList.remove('show');
+                errorMessage.textContent = '';
+                maturityAmountResult.textContent = '₹0';
+                fdInterestResult.textContent = '₹0';
+                fdPrincipalResult.textContent = '₹0';
+            }
+
+            calculateBtn.addEventListener('click', calculate);
+            resetBtn.addEventListener('click', resetCalculator);
+
+            document.querySelectorAll('input').forEach(function(input) {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        calculate();
+                    }
+                });
+            });
+
+            document.getElementById('copyResultBtn').addEventListener('click', function() {
+                const text = `
+FD Calculator Results:
+Maturity Amount: ${maturityAmountResult.textContent}
+Total Interest Earned: ${fdInterestResult.textContent}
+Principal Amount: ${fdPrincipalResult.textContent}
+                `;
+                navigator.clipboard.writeText(text.trim()).then(function() {
+                    alert('Results copied to clipboard!');
+                });
+            });
+
+            document.getElementById('printResultBtn').addEventListener('click', function() {
+                window.print();
+            });
+
+            // FAQ Accordion
+            document.querySelectorAll('.faq-question').forEach(function(question) {
+                question.addEventListener('click', function() {
+                    const isActive = this.classList.contains('active');
+                    const answer = this.nextElementSibling;
+                    const arrow = this.querySelector('.arrow');
+                    
+                    document.querySelectorAll('.faq-question').forEach(function(q) {
+                        if (q !== question) {
+                            q.classList.remove('active');
+                            q.nextElementSibling.classList.remove('show');
+                            q.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                    
+                    this.classList.toggle('active');
+                    answer.classList.toggle('show');
+                    this.setAttribute('aria-expanded', !isActive);
+                });
+
+                question.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
