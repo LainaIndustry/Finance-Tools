@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Interest Calculator - Calculate Total Loan Interest</title>
+    <meta name="description" content="Free loan interest calculator to calculate total interest payable on your loan. Compare different loan scenarios and save money.">
+    <link rel="canonical" href="https://www.loanfinancecalculators.com/loan-interest-calculator.html">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .calculator-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 24px 0 40px;
+        }
+        .calculator-input, .calculator-result {
+            background: var(--white);
+            padding: 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            transition: border-color var(--transition);
+            background: var(--white);
+            color: var(--text);
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .form-group .hint {
+            font-size: 0.85rem;
+            color: var(--text-lighter);
+            margin-top: 4px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-item .label {
+            color: var(--text-light);
+        }
+        .result-item .value {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        .result-item .value.positive {
+            color: #2e7d32;
+        }
+        .error-message {
+            color: #d32f2f;
+            background: #ffebee;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin: 12px 0;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        .result-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        .result-actions button {
+            padding: 8px 20px;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-weight: 500;
+        }
+        .result-actions button:hover {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+        }
+        .faq-section {
+            margin: 40px 0;
+        }
+        .faq-item {
+            background: var(--white);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .faq-question {
+            padding: 16px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background var(--transition);
+        }
+        .faq-question:hover {
+            background: var(--gray);
+        }
+        .faq-question .arrow {
+            transition: transform var(--transition);
+        }
+        .faq-question.active .arrow {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            padding: 0 20px 20px;
+            display: none;
+            color: var(--text-light);
+        }
+        .faq-answer.show {
+            display: block;
+        }
+        .related-calculators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0 32px;
+        }
+        @media (max-width: 820px) {
+            .calculator-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .calculator-input, .calculator-result {
+                padding: 20px;
+            }
+        }
+        @media (max-width: 500px) {
+            .result-item {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .result-item .value {
+                font-size: 1rem;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn-group .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-bar">
+            <div class="logo">
+                <span class="logo-icon">📊</span>
+                <span class="logo-text">Loan<span>Finance</span>.</span>
+            </div>
+            <nav aria-label="Main navigation">
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/calculators.html">Calculators</a></li>
+                    <li><a href="/loan-calculator.html" class="active">Loans</a></li>
+                    <li><a href="/investment-calculator.html">Investments</a></li>
+                    <li><a href="/interest-calculator.html">Interest</a></li>
+                    <li><a href="/savings-calculator.html">Savings</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile navigation">
+            <a href="/">Home</a>
+            <a href="/calculators.html">Calculators</a>
+            <a href="/loan-calculator.html">Loans</a>
+            <a href="/investment-calculator.html">Investments</a>
+            <a href="/interest-calculator.html">Interest</a>
+            <a href="/savings-calculator.html">Savings</a>
+            <a href="/about.html">About</a>
+            <a href="/contact.html">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <nav aria-label="Breadcrumb">
+                <ol style="display:flex; gap:8px; list-style:none; padding:16px 0; font-size:0.9rem; color:var(--text-lighter);">
+                    <li><a href="/">Home</a></li>
+                    <li>›</li>
+                    <li><a href="/calculators.html">Calculators</a></li>
+                    <li>›</li>
+                    <li>Loan Interest Calculator</li>
+                </ol>
+            </nav>
+
+            <h1>Loan Interest Calculator</h1>
+            <p>Calculate the total interest you'll pay on your loan. Enter the loan amount, interest rate, and tenure to see how much interest you'll pay over the loan term.</p>
+
+            <div class="ad-container">
+                <span>📢 Advertisement</span>
+            </div>
+
+            <div class="calculator-wrapper">
+                <div class="calculator-input">
+                    <h2>Calculator Input</h2>
+                    
+                    <div class="form-group">
+                        <label for="liLoanAmount">Loan Amount</label>
+                        <input type="number" id="liLoanAmount" placeholder="e.g., 500000" step="1000" min="0">
+                        <div class="hint">Total loan amount</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="liInterestRate">Interest Rate (% per annum)</label>
+                        <input type="number" id="liInterestRate" placeholder="e.g., 8.5" step="0.1" min="0">
+                        <div class="hint">Annual interest rate</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="liLoanTenure">Loan Tenure</label>
+                        <div style="display:flex; gap:12px;">
+                            <input type="number" id="liLoanTenure" placeholder="e.g., 5" step="1" min="1" style="flex:1;">
+                            <select id="liTenureUnit" style="width:auto;">
+                                <option value="years">Years</option>
+                                <option value="months">Months</option>
+                            </select>
+                        </div>
+                        <div class="hint">Duration of the loan</div>
+                    </div>
+
+                    <div class="error-message" id="errorMessage"></div>
+
+                    <div class="btn-group">
+                        <button class="btn" id="calculateBtn">Calculate Interest</button>
+                        <button class="btn btn-outline" id="resetBtn">Reset</button>
+                    </div>
+                </div>
+
+                <div class="calculator-result">
+                    <h2>Results</h2>
+                    <div id="resultContainer">
+                        <div class="result-item">
+                            <span class="label">Total Interest Payable</span>
+                            <span class="value positive" id="liTotalInterestResult">₹0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Total Payment</span>
+                            <span class="value" id="liTotalPaymentResult">₹0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Monthly EMI</span>
+                            <span class="value" id="liEMIResult">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="result-actions">
+                        <button id="copyResultBtn">📋 Copy Results</button>
+                        <button id="printResultBtn">🖨️ Print</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ad-container">
+                <span>📢 Advertisement</span>
+            </div>
+
+            <div class="related-calculators">
+                <h2>Related Calculators</h2>
+                <div class="related-calculators">
+                    <a href="/emi-calculator.html" class="btn btn-outline">EMI Calculator</a>
+                    <a href="/loan-calculator.html" class="btn btn-outline">Loan Calculator</a>
+                    <a href="/personal-loan-calculator.html" class="btn btn-outline">Personal Loan Calculator</a>
+                    <a href="/home-loan-calculator.html" class="btn btn-outline">Home Loan Calculator</a>
+                </div>
+            </div>
+
+            <section class="faq-section" aria-labelledby="faq-title">
+                <h2 id="faq-title">Frequently Asked Questions</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <span>How is loan interest calculated?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Loan interest is calculated using the EMI formula which takes into account the principal amount, interest rate, and loan tenure. The total interest is the difference between the total payment and the principal amount.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <span>What affects the total interest on a loan?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        The total interest on a loan is affected by three main factors: the loan amount, the interest rate, and the loan tenure. Higher loan amounts, higher interest rates, and longer tenures result in higher total interest.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <span>How can I reduce the total interest on my loan?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        You can reduce total interest by: (1) Making a larger down payment to reduce the loan amount, (2) Choosing a shorter loan tenure, (3) Shopping for lower interest rates, and (4) Making extra payments when possible.
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <strong>Loan & Finance Calculators</strong>
+                    <p>Smart Financial Calculators for Better Decisions</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Home</a>
+                    <a href="/calculators.html">Calculators</a>
+                    <a href="/about.html">About Us</a>
+                    <a href="/contact.html">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <a href="/privacy-policy.html">Privacy Policy</a>
+                    <a href="/terms.html">Terms & Conditions</a>
+                    <a href="/disclaimer.html">Disclaimer</a>
+                    <a href="/blog.html">Blog</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Loan & Finance Calculators. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/calculators.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const liLoanAmount = document.getElementById('liLoanAmount');
+            const liInterestRate = document.getElementById('liInterestRate');
+            const liLoanTenure = document.getElementById('liLoanTenure');
+            const liTenureUnit = document.getElementById('liTenureUnit');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            const liTotalInterestResult = document.getElementById('liTotalInterestResult');
+            const liTotalPaymentResult = document.getElementById('liTotalPaymentResult');
+            const liEMIResult = document.getElementById('liEMIResult');
+
+            function calculate() {
+                errorMessage.classList.remove('show');
+                errorMessage.textContent = '';
+
+                const amount = parseFloat(liLoanAmount.value);
+                const rate = parseFloat(liInterestRate.value);
+                let tenure = parseFloat(liLoanTenure.value);
+
+                if (isNaN(amount) || amount <= 0) {
+                    errorMessage.textContent = 'Please enter a valid loan amount.';
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                if (isNaN(rate) || rate < 0) {
+                    errorMessage.textContent = 'Please enter a valid interest rate.';
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                if (isNaN(tenure) || tenure <= 0) {
+                    errorMessage.textContent = 'Please enter a valid loan tenure.';
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                if (liTenureUnit.value === 'years') {
+                    tenure = tenure * 12;
+                }
+
+                const result = window.calculateEMI(amount, rate, tenure);
+                
+                if (result.error) {
+                    errorMessage.textContent = result.error;
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                const currencySymbol = '₹';
+                liTotalInterestResult.textContent = window.formatCurrency(result.totalInterest, currencySymbol);
+                liTotalPaymentResult.textContent = window.formatCurrency(result.totalPayment, currencySymbol);
+                liEMIResult.textContent = window.formatCurrency(result.emi, currencySymbol);
+            }
+
+            function resetCalculator() {
+                liLoanAmount.value = '';
+                liInterestRate.value = '';
+                liLoanTenure.value = '';
+                errorMessage.classList.remove('show');
+                errorMessage.textContent = '';
+                liTotalInterestResult.textContent = '₹0';
+                liTotalPaymentResult.textContent = '₹0';
+                liEMIResult.textContent = '₹0';
+            }
+
+            calculateBtn.addEventListener('click', calculate);
+            resetBtn.addEventListener('click', resetCalculator);
+
+            document.querySelectorAll('input').forEach(function(input) {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        calculate();
+                    }
+                });
+            });
+
+            document.getElementById('copyResultBtn').addEventListener('click', function() {
+                const text = `
+Loan Interest Calculator Results:
+Total Interest Payable: ${liTotalInterestResult.textContent}
+Total Payment: ${liTotalPaymentResult.textContent}
+Monthly EMI: ${liEMIResult.textContent}
+                `;
+                navigator.clipboard.writeText(text.trim()).then(function() {
+                    alert('Results copied to clipboard!');
+                });
+            });
+
+            document.getElementById('printResultBtn').addEventListener('click', function() {
+                window.print();
+            });
+
+            // FAQ Accordion
+            document.querySelectorAll('.faq-question').forEach(function(question) {
+                question.addEventListener('click', function() {
+                    const isActive = this.classList.contains('active');
+                    const answer = this.nextElementSibling;
+                    const arrow = this.querySelector('.arrow');
+                    
+                    document.querySelectorAll('.faq-question').forEach(function(q) {
+                        if (q !== question) {
+                            q.classList.remove('active');
+                            q.nextElementSibling.classList.remove('show');
+                            q.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                    
+                    this.classList.toggle('active');
+                    answer.classList.toggle('show');
+                    this.setAttribute('aria-expanded', !isActive);
+                });
+
+                question.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
