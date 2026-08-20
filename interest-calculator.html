@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interest Calculator - Calculate Simple & Compound Interest</title>
+    <meta name="description" content="Free interest calculator to calculate both simple and compound interest. Compare interest rates and see your money grow.">
+    <link rel="canonical" href="https://www.loanfinancecalculators.com/interest-calculator.html">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .calculator-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 24px 0 40px;
+        }
+        .calculator-input, .calculator-result {
+            background: var(--white);
+            padding: 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            transition: border-color var(--transition);
+            background: var(--white);
+            color: var(--text);
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .form-group .hint {
+            font-size: 0.85rem;
+            color: var(--text-lighter);
+            margin-top: 4px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-item .label {
+            color: var(--text-light);
+        }
+        .result-item .value {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        .result-item .value.positive {
+            color: #2e7d32;
+        }
+        .error-message {
+            color: #d32f2f;
+            background: #ffebee;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin: 12px 0;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        .result-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        .result-actions button {
+            padding: 8px 20px;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-weight: 500;
+        }
+        .result-actions button:hover {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+        }
+        .interest-type-toggle {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .interest-type-toggle button {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition);
+        }
+        .interest-type-toggle button.active {
+            border-color: var(--accent);
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+        .interest-type-toggle button:hover {
+            border-color: var(--accent);
+        }
+        .faq-section {
+            margin: 40px 0;
+        }
+        .faq-item {
+            background: var(--white);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .faq-question {
+            padding: 16px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background var(--transition);
+        }
+        .faq-question:hover {
+            background: var(--gray);
+        }
+        .faq-question .arrow {
+            transition: transform var(--transition);
+        }
+        .faq-question.active .arrow {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            padding: 0 20px 20px;
+            display: none;
+            color: var(--text-light);
+        }
+        .faq-answer.show {
+            display: block;
+        }
+        .related-calculators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0 32px;
+        }
+        @media (max-width: 820px) {
+            .calculator-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .calculator-input, .calculator-result {
+                padding: 20px;
+            }
+        }
+        @media (max-width: 500px) {
+            .result-item {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .result-item .value {
+                font-size: 1rem;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn-group .btn {
+                width: 100%;
+                text-align: center;
+            }
+            .interest-type-toggle {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-bar">
+            <div class="logo">
+                <span class="logo-icon">📊</span>
+                <span class="logo-text">Loan<span>Finance</span>.</span>
+            </div>
+            <nav aria-label="Main navigation">
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/calculators.html">Calculators</a></li>
+                    <li><a href="/loan-calculator.html">Loans</a></li>
+                    <li><a href="/investment-calculator.html">Investments</a></li>
+                    <li><a href="/interest-calculator.html" class="active">Interest</a></li>
+                    <li><a href="/savings-calculator.html">Savings</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile navigation">
+            <a href="/">Home</a>
+            <a href="/calculators.html">Calculators</a>
+            <a href="/loan-calculator.html">Loans</a>
+            <a href="/investment-calculator.html">Investments</a>
+            <a href="/interest-calculator.html">Interest</a>
+            <a href="/savings-calculator.html">Savings</a>
+            <a href="/about.html">About</a>
+            <a href="/contact.html">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <nav aria-label="Breadcrumb">
+                <ol style="display:flex; gap:8px; list-style:none; padding:16px 0; font-size:0.9rem; color:var(--text-lighter);">
+                    <li><a href="/">Home</a></li>
+                    <li>›</li>
+                    <li><a href="/calculators.html">Calculators</a></li>
+                    <li>›</li>
+                    <li>Interest Calculator</li>
+                </ol>
+            </nav>
+
+            <h1>Interest Calculator</h1>
+            <p>Calculate both simple and compound interest easily. Compare how your money grows with different interest rates and time periods.</p>
+
+            <div class="ad-container">
+                <span>📢 Advertisement</span>
+            </div>
+
+            <div class="calculator-wrapper">
+                <div class="calculator-input">
+                    <h2>Calculator Input</h2>
+                    
+                    <div class="interest-type-toggle">
+                        <button id="simpleBtn" class="active">Simple Interest</button>
+                        <button id="compoundBtn">Compound Interest</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="intPrincipal">Principal Amount</label>
+                        <input type="number" id="intPrincipal" placeholder="e.g., 100000" step="1000" min="0">
+                        <div class="hint">Initial amount</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="intRate">Interest Rate (% per annum)</label>
+                        <input type="number" id="intRate" placeholder="e.g., 8" step="0.1" min="0">
+                        <div class="hint">Annual interest rate</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="intTime">Time Period</label>
+                        <div style="display:flex; gap:12px;">
+                            <input type="number" id="intTime" placeholder="e.g., 5" step="0.5" min="0.5" style="flex:1;">
+                            <select id="intTimeUnit" style="width:auto;">
+                                <option value="years">Years</option>
+                                <option value="months">Months</option>
+                            </select>
+                        </div>
+                        <div class="hint">Duration for interest calculation</div>
+                    </div>
+
+                    <div class="form-group" id="compoundingGroup" style="display:none;">
+                        <label for="intCompounding">Compounding Frequency</label>
+                        <select id="intCompounding">
+                            <option value="yearly">Yearly</option>
+                            <option value="half-yearly">Half-Yearly</option>
+                            <option value="quarterly">Quarterly</option>
+                            <option value="monthly" selected>Monthly</option>
+                            <option value="daily">Daily</option>
+                        </select>
+                        <div class="hint">How often interest is compounded</div>
+                    </div>
+
+                    <div class="error-message" id="errorMessage"></div>
+
+                    <div class="btn-group">
+                        <button class="btn" id="calculateBtn">Calculate Interest</button>
+                        <button class="btn btn-outline" id="resetBtn">Reset</button>
+                    </div>
+                </div>
+
+                <div class="calculator-result">
+                    <h2>Results</h2>
+                    <div id="resultContainer">
+                        <div class="result-item">
+                            <span class="label">Total Amount</span>
+                            <span class="value" id="intTotalResult">₹0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Interest Earned</span>
+                            <span class="value positive" id="intInterestResult">₹0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Principal</span>
+                            <span class="value" id="intPrincipalResult">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="result-actions">
+                        <button id="copyResultBtn">📋 Copy Results</button>
+                        <button id="printResultBtn">🖨️ Print</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ad-container">
+                <span>📢 Advertisement</span>
+            </div>
+
+            <!-- Related Calculators -->
+            <h2>Related Calculators</h2>
+            <div class="related-calculators">
+                <a href="/simple-interest-calculator.html" class="btn btn-outline">Simple Interest Calculator</a>
+                <a href="/compound-interest-calculator.html" class="btn btn-outline">Compound Interest Calculator</a>
+                <a href="/fd-calculator.html" class="btn btn-outline">FD Calculator</a>
+                <a href="/sip-calculator.html" class="btn btn-outline">SIP Calculator</a>
+            </div>
+
+            <!-- FAQ Section -->
+            <section class="faq-section" aria-labelledby="faq-title">
+                <h2 id="faq-title">Frequently Asked Questions</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <span>What is the difference between simple and compound interest?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Simple interest is calculated only on the principal amount, while compound interest is calculated on the principal and accumulated interest. Compound interest typically yields higher returns over time.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <span>How does compounding frequency affect returns?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Higher compounding frequency (daily vs yearly) results in higher returns because interest is calculated and added more frequently, allowing your money to grow faster through the power of compounding.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <span>Which is better: simple or compound interest?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        For borrowers, simple interest is better as it costs less. For savers and investors, compound interest is better as it grows your money faster. The choice depends on whether you're borrowing or lending money.
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <strong>Loan & Finance Calculators</strong>
+                    <p>Smart Financial Calculators for Better Decisions</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Home</a>
+                    <a href="/calculators.html">Calculators</a>
+                    <a href="/about.html">About Us</a>
+                    <a href="/contact.html">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <a href="/privacy-policy.html">Privacy Policy</a>
+                    <a href="/terms.html">Terms & Conditions</a>
+                    <a href="/disclaimer.html">Disclaimer</a>
+                    <a href="/blog.html">Blog</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Loan & Finance Calculators. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/calculators.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const intPrincipal = document.getElementById('intPrincipal');
+            const intRate = document.getElementById('intRate');
+            const intTime = document.getElementById('intTime');
+            const intTimeUnit = document.getElementById('intTimeUnit');
+            const intCompounding = document.getElementById('intCompounding');
+            const compoundingGroup = document.getElementById('compoundingGroup');
+            
+            const simpleBtn = document.getElementById('simpleBtn');
+            const compoundBtn = document.getElementById('compoundBtn');
+            
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            const intTotalResult = document.getElementById('intTotalResult');
+            const intInterestResult = document.getElementById('intInterestResult');
+            const intPrincipalResult = document.getElementById('intPrincipalResult');
+
+            let isCompound = false;
+
+            simpleBtn.addEventListener('click', function() {
+                this.classList.add('active');
+                compoundBtn.classList.remove('active');
+                compoundingGroup.style.display = 'none';
+                isCompound = false;
+            });
+
+            compoundBtn.addEventListener('click', function() {
+                this.classList.add('active');
+                simpleBtn.classList.remove('active');
+                compoundingGroup.style.display = 'block';
+                isCompound = true;
+            });
+
+            function calculate() {
+                errorMessage.classList.remove('show');
+                errorMessage.textContent = '';
+
+                const principal = parseFloat(intPrincipal.value);
+                const rate = parseFloat(intRate.value);
+                let time = parseFloat(intTime.value);
+
+                if (isNaN(principal) || principal <= 0) {
+                    errorMessage.textContent = 'Please enter a valid principal amount.';
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                if (isNaN(rate) || rate < 0) {
+                    errorMessage.textContent = 'Please enter a valid interest rate.';
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                if (isNaN(time) || time <= 0) {
+                    errorMessage.textContent = 'Please enter a valid time period.';
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                // Convert time to years if in months
+                if (intTimeUnit.value === 'months') {
+                    time = time / 12;
+                }
+
+                let result;
+                if (isCompound) {
+                    const freq = {
+                        'yearly': 1,
+                        'half-yearly': 2,
+                        'quarterly': 4,
+                        'monthly': 12,
+                        'daily': 365
+                    }[intCompounding.value] || 12;
+                    result = window.calculateCompoundInterest(principal, rate, time, freq, 0);
+                } else {
+                    result = window.calculateSimpleInterest(principal, rate, time);
+                }
+                
+                if (result.error) {
+                    errorMessage.textContent = result.error;
+                    errorMessage.classList.add('show');
+                    return;
+                }
+
+                const currencySymbol = '₹';
+                intTotalResult.textContent = window.formatCurrency(result.totalAmount || result.principal + result.interest, currencySymbol);
+                intInterestResult.textContent = window.formatCurrency(result.interest || result.totalInterest, currencySymbol);
+                intPrincipalResult.textContent = window.formatCurrency(result.principal, currencySymbol);
+            }
+
+            function resetCalculator() {
+                intPrincipal.value = '';
+                intRate.value = '';
+                intTime.value = '';
+                errorMessage.classList.remove('show');
+                errorMessage.textContent = '';
+                intTotalResult.textContent = '₹0';
+                intInterestResult.textContent = '₹0';
+                intPrincipalResult.textContent = '₹0';
+            }
+
+            calculateBtn.addEventListener('click', calculate);
+            resetBtn.addEventListener('click', resetCalculator);
+
+            document.querySelectorAll('input').forEach(function(input) {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        calculate();
+                    }
+                });
+            });
+
+            document.getElementById('copyResultBtn').addEventListener('click', function() {
+                const text = `
+Interest Calculator Results:
+Total Amount: ${intTotalResult.textContent}
+Interest Earned: ${intInterestResult.textContent}
+Principal: ${intPrincipalResult.textContent}
+                `;
+                navigator.clipboard.writeText(text.trim()).then(function() {
+                    alert('Results copied to clipboard!');
+                });
+            });
+
+            document.getElementById('printResultBtn').addEventListener('click', function() {
+                window.print();
+            });
+
+            // FAQ Accordion
+            document.querySelectorAll('.faq-question').forEach(function(question) {
+                question.addEventListener('click', function() {
+                    const isActive = this.classList.contains('active');
+                    const answer = this.nextElementSibling;
+                    const arrow = this.querySelector('.arrow');
+                    
+                    document.querySelectorAll('.faq-question').forEach(function(q) {
+                        if (q !== question) {
+                            q.classList.remove('active');
+                            q.nextElementSibling.classList.remove('show');
+                            q.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                    
+                    this.classList.toggle('active');
+                    answer.classList.toggle('show');
+                    this.setAttribute('aria-expanded', !isActive);
+                });
+
+                question.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
