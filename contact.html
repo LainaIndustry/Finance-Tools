@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Loan & Finance Calculators</title>
+    <meta name="description" content="Get in touch with Loan & Finance Calculators. We'd love to hear your feedback, suggestions, or questions.">
+    <link rel="canonical" href="https://www.loanfinancecalculators.com/contact.html">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin: 24px 0 48px;
+        }
+        .contact-info {
+            background: var(--white);
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .contact-info h2 {
+            margin-bottom: 16px;
+        }
+        .contact-info p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        .contact-detail:last-child {
+            border-bottom: none;
+        }
+        .contact-detail .icon {
+            font-size: 1.4rem;
+            width: 40px;
+            text-align: center;
+        }
+        .contact-form {
+            background: var(--white);
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .contact-form h2 {
+            margin-bottom: 16px;
+        }
+        .contact-form .form-group {
+            margin-bottom: 18px;
+        }
+        .contact-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            transition: border-color var(--transition);
+            font-family: var(--font);
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .contact-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .contact-form .btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+        }
+        .form-success {
+            display: none;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin-top: 16px;
+        }
+        .form-success.show {
+            display: block;
+        }
+        @media (max-width: 820px) {
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .contact-info,
+            .contact-form {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-bar">
+            <div class="logo">
+                <span class="logo-icon">📊</span>
+                <span class="logo-text">Loan<span>Finance</span>.</span>
+            </div>
+            <nav aria-label="Main navigation">
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/calculators.html">Calculators</a></li>
+                    <li><a href="/loan-calculator.html">Loans</a></li>
+                    <li><a href="/investment-calculator.html">Investments</a></li>
+                    <li><a href="/interest-calculator.html">Interest</a></li>
+                    <li><a href="/savings-calculator.html">Savings</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/contact.html" class="active">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile navigation">
+            <a href="/">Home</a>
+            <a href="/calculators.html">Calculators</a>
+            <a href="/loan-calculator.html">Loans</a>
+            <a href="/investment-calculator.html">Investments</a>
+            <a href="/interest-calculator.html">Interest</a>
+            <a href="/savings-calculator.html">Savings</a>
+            <a href="/about.html">About</a>
+            <a href="/contact.html">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <nav aria-label="Breadcrumb">
+                <ol style="display:flex; gap:8px; list-style:none; padding:16px 0; font-size:0.9rem; color:var(--text-lighter);">
+                    <li><a href="/">Home</a></li>
+                    <li>›</li>
+                    <li>Contact</li>
+                </ol>
+            </nav>
+
+            <h1>Contact Us</h1>
+            <p>Have questions, suggestions, or feedback? We'd love to hear from you.</p>
+
+            <div class="ad-container">
+                <span>📢 Advertisement</span>
+            </div>
+
+            <div class="contact-wrapper">
+                <div class="contact-info">
+                    <h2>Get in Touch</h2>
+                    <p>We're here to help! Whether you have a question about our calculators, need assistance, or want to share your feedback, feel free to reach out.</p>
+                    
+                    <div class="contact-detail">
+                        <span class="icon">📧</span>
+                        <div>
+                            <strong>Email</strong><br>
+                            <a href="mailto:support@loanfinancecalculators.com">support@loanfinancecalculators.com</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <span class="icon">📱</span>
+                        <div>
+                            <strong>Social Media</strong><br>
+                            <span>Connect with us on our social channels</span>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <span class="icon">🕐</span>
+                        <div>
+                            <strong>Response Time</strong><br>
+                            <span>We typically respond within 24-48 hours</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h2>Send a Message</h2>
+                    <form id="contactForm" novalidate>
+                        <div class="form-group">
+                            <label for="contactName">Your Name</label>
+                            <input type="text" id="contactName" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email Address</label>
+                            <input type="email" id="contactEmail" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactSubject">Subject</label>
+                            <input type="text" id="contactSubject" placeholder="Enter subject">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Message</label>
+                            <textarea id="contactMessage" placeholder="Write your message here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                        <div class="form-success" id="formSuccess">
+                            ✅ Thank you! Your message has been sent. We'll get back to you soon.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <strong>Loan & Finance Calculators</strong>
+                    <p>Smart Financial Calculators for Better Decisions</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Home</a>
+                    <a href="/calculators.html">Calculators</a>
+                    <a href="/about.html">About Us</a>
+                    <a href="/contact.html">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <a href="/privacy-policy.html">Privacy Policy</a>
+                    <a href="/terms.html">Terms & Conditions</a>
+                    <a href="/disclaimer.html">Disclaimer</a>
+                    <a href="/blog.html">Blog</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Loan & Finance Calculators. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            const formSuccess = document.getElementById('formSuccess');
+
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simple validation
+                const name = document.getElementById('contactName').value.trim();
+                const email = document.getElementById('contactEmail').value.trim();
+                const message = document.getElementById('contactMessage').value.trim();
+
+                if (!name || !email || !message) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                if (!email.includes('@') || !email.includes('.')) {
+                    alert('Please enter a valid email address.');
+                    return;
+                }
+
+                // Show success message
+                formSuccess.classList.add('show');
+                this.reset();
+
+                // Auto-hide after 5 seconds
+                setTimeout(function() {
+                    formSuccess.classList.remove('show');
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>
